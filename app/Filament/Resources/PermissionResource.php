@@ -68,9 +68,14 @@ class PermissionResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // Adicione sua lógica condicional aqui.
-        // Por exemplo, verificar se o usuário está autenticado ou tem uma permissão específica.
+        //verificando permissão
+        $user = auth()->user();
+        if($user->hasRole('saas-super-admin'))
+        {
+            return true;
+        }
         return false;
+
     }
 
     public static function navigation(): array

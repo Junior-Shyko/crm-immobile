@@ -56,4 +56,25 @@ class RoleResource extends Resource
             'index' => Pages\ManageRoles::route('/'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Adicione sua lógica condicional aqui.
+        // Por exemplo, verificar se o usuário está autenticado ou tem uma permissão específica
+        $user = auth()->user();
+        if($user->hasRole('saas-super-admin'))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public static function navigation(): array
+    {
+        return [
+            'label' => 'Papeis',
+            'icon' => 'heroicon-o-rectangle-stack',
+            'shouldRegisterNavigation' => static::shouldRegisterNavigation(),
+        ];
+    }
 }
