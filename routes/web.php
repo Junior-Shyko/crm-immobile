@@ -10,7 +10,7 @@ Route::domain('localhost')->group(function () {
 
 Route::domain('{tenant}.localhost')->group(function () {
     Route::get('/', function (string $tenant) {
-        Route::view('/', 'welcome');
+        return $tenant;
     });
 });
 

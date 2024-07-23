@@ -10,10 +10,10 @@ use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
-
+use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable, HasRoles, UsesTenantConnection;
+    use HasFactory, Notifiable, HasRoles, UsesTenantConnection, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
