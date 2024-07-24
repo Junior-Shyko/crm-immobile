@@ -1,5 +1,5 @@
 <div>
-   <h1>Testando</h1>
+   <h1>ID usuário: {{$idUser}} - {{request()->get('id')}}</h1>
 
     <div class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900">
         @php foreach ($roles as $role) : @endphp
@@ -21,7 +21,7 @@
                             <li class="p-2 rounded-md" >
                                 <div class="flex align-middle flex-row justify-between">
                                     <div class="p-2">
-                                        <input type="checkbox" class="h-4 w-4" value="true"/>
+                                        <input type="checkbox" wire:click="setPermissions({{request()->get('id')}})" class="h-4 w-4" value="true"/>
                                     </div>
                                     <div class="p-2">
                                         <p class="text-lg line-through text-gray-400">{{$permission->name}}</p>
