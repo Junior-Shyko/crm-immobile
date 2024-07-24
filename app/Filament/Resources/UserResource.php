@@ -5,7 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
-use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -50,8 +51,16 @@ class UserResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Action::make('Permissões')
+                        ->icon('heroicon-s-cog-6-tooth')
+                        ->action(function (User $record) {
+                            return redirect('admin/settings-permissions/?id=' . $record->id);
+                        })
+                ])
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

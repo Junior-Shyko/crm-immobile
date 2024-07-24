@@ -9,6 +9,8 @@ class SettingsPermissions extends Component
 {
     public $roles = [];
 
+    public int $idUser = 0;
+
     public $nameRole = "";
 
     public function render()
@@ -19,6 +21,11 @@ class SettingsPermissions extends Component
     public function mount()
     {
         $this->roles = Role::all();
+    }
+
+    public function setPermissions($id)
+    {
+        return $this->idUser = $id;
     }
 
     public function updatedRolesTeste($role)
