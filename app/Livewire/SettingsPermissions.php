@@ -2,16 +2,22 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
+use App\Repositories\UserRepository;
 use Livewire\Component;
 use \Spatie\Permission\Models\Role;
+use App\Interfaces\UserRepositoryInterface;
 
 class SettingsPermissions extends Component
 {
+
     public $roles = [];
 
     public int $idUser = 0;
 
     public $nameRole = "";
+
+    public string $permission;
 
     public function render()
     {
@@ -23,9 +29,14 @@ class SettingsPermissions extends Component
         $this->roles = Role::all();
     }
 
+
     public function setPermissions($id)
     {
-        return $this->idUser = $id;
+        $user =  User::findOrFail($id);
+//        $user->givePermissionTo('edit articles');
+        dump($user);
+        dump($this->permission);
+//        return $this->idUser = $user->id;
     }
 
     public function updatedRolesTeste($role)
