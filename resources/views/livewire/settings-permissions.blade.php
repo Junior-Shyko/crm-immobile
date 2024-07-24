@@ -21,7 +21,12 @@
                             <li class="p-2 rounded-md" >
                                 <div class="flex align-middle flex-row justify-between">
                                     <div class="p-2">
-                                        <input type="checkbox" wire:click="setPermissions({{request()->get('id')}})" class="h-4 w-4" value="true"/>
+                                        <input type="checkbox"
+                                               wire:model="permission"
+                                               wire:click="setPermissions({{request()->get('id')}})"
+                                               class="h-4 w-4"
+                                               x-on:click="$wire.todo = {{$permission->name}}"
+                                              />
                                     </div>
                                     <div class="p-2">
                                         <p class="text-lg line-through text-gray-400">{{$permission->name}}</p>
