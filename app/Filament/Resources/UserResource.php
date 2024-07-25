@@ -24,26 +24,33 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->label('Nome do Usuário')
-                    ->required(),
-                TextInput::make('email')
-                    ->label('E-mail do Usuário')
-                    ->required(),
-                Section::make('Permissão')
-                    ->description('Gerencie as permissões dos seus usuários')
-                    ->schema([
-                        Select::make('permissions')
-                            ->label('Permissão')
-                            ->multiple()
-                            ->relationship(name: 'permissions', titleAttribute: 'name')
-                            ->preload(),
-                    ])
+        $user = auth()->user();
 
-            ]);
+        return $form
+            ->schema(function () use ($user){
+                $schema = [
+                    TextInput::make('name')
+                        ->label('Nome do Usuário')
+                        ->required(),
+                    TextInput::make('email')
+                        ->label('E-mail do Usuário')
+                        ->required(),
+                ];
+                if ($user->hasRole(['saas-super-admin', 'super-admin'])) {
+                    $schema[] = Section::make('Permissão')
+                        ->description('Gerencie as permissões dos seus usuários')
+                        ->schema([
+                            Select::make('permissions')
+                                ->label('Permissão')
+                                ->multiple()
+                                ->relationship(name: 'permissions', titleAttribute: 'name')
+                                ->preload(),
+                        ]);
+                }
+                return $schema;
+            });
     }
+
 
     public static function table(Table $table): Table
     {
@@ -69,21 +76,16 @@ class UserResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                    Action::make('Permissões')
-                        ->icon('heroicon-s-cog-6-tooth')
-                        ->action(function (User $record) {
-                            return redirect('admin/settings-permissions/?id=' . $record->id);
-                        })
-                ])   ->button()
-                    ->label('Ações')
-                    ->color('primary'),
-
+                ])->button()
+                    ->label('Ação')
+                    ->color('primary')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+
     }
 
     public static function getPages(): array
@@ -92,4 +94,5 @@ class UserResource extends Resource
             'index' => Pages\ManageUsers::route('/'),
         ];
     }
+
 }
