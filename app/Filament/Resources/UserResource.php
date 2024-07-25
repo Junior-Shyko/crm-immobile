@@ -46,6 +46,15 @@ class UserResource extends Resource
                                 ->relationship(name: 'permissions', titleAttribute: 'name')
                                 ->preload(),
                         ]);
+                    $schema[] = Section::make('Papeis')
+                        ->description('Altere o papel dos seus usuários')
+                        ->schema([
+                            Select::make('roles')
+                                ->label('Papel')
+                                ->multiple()
+                                ->relationship(name: 'roles', titleAttribute: 'name')
+                                ->preload(),
+                        ]);
                 }
                 return $schema;
             });
