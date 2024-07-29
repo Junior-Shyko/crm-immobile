@@ -51,7 +51,6 @@ class UserResource extends Resource
                         ->schema([
                             Select::make('roles')
                                 ->label('Papel')
-                                ->multiple()
                                 ->relationship(name: 'roles', titleAttribute: 'name')
                                 ->preload(),
                         ]);
