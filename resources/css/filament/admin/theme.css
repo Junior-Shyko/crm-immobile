@@ -1,0 +1,26 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+.fi-sidebar {
+    @apply bg-gradient-to-b dark:bg-gray-950 dark:bg-gray-800 from-[#e2e8f0]  to-[#cbd5e1] dark:bg-transparent;
+}
+.fi-sidebar-group div span {
+    @apply text-slate-400 ;
+}
+.fi-sidebar-group .fi-icon-btn {
+    @apply text-slate-600 ;
+}
+
+.fi-sidebar-item-icon {
+    @apply text-slate-600 ;
+}
+.fi-sidebar-item a {
+    @apply text-slate-100 ;
+}
+.fi-sidebar-item a:hover {
+    @apply bg-slate-300 ;
+}
+.fi-sidebar-item-label{
+    @apply text-slate-600 ;
+}
