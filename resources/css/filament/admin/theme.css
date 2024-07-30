@@ -3,7 +3,7 @@
 @config 'tailwind.config.js';
 
 .fi-sidebar {
-    @apply bg-gradient-to-b dark:bg-gray-950 dark:bg-gray-800 from-[#e2e8f0]  to-[#cbd5e1] dark:bg-transparent;
+    @apply bg-gradient-to-b dark:bg-gray-950 dark:bg-gray-800 from-[#f1f5f9]  to-[#e2e8f0] dark:bg-transparent;
 }
 .fi-sidebar-group div span {
     @apply text-slate-400 ;

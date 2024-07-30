@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('data_personals', function (Blueprint $table) {
             $table->id();
+            $table->string('cpf', '50')->nullable();
+            $table->date('birthDate')->nullable();
+            $table->string('organConsignor', '50')->nullable();
+            $table->string('sex', '50')->nullable();
+            $table->string('nationality', '50')->nullable();
+            $table->string('educationLevel', '50')->nullable();
+            $table->string('identity', '50')->nullable();
+            $table->string('naturality', '50')->nullable();
+            $table->string('maritalStatus', '50')->nullable();
+            $table->date('conversionDate')->nullable();
+            $table->string('baptized', '3')->nullable();
+            $table->unsignedBigInteger('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

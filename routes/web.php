@@ -1,5 +1,6 @@
 <?php
 
+use App\Filament\Resources\DataPersonalResource;
 use Illuminate\Support\Facades\Route;
 
 Route::domain('localhost')->group(function () {
@@ -12,6 +13,8 @@ Route::domain('{tenant}.localhost')->group(function () {
     Route::get('/', function (string $tenant) {
         return $tenant;
     });
+    Route::get('/data-personal-resource/create', [DataPersonalResource::class, 'create'])
+        ->name('filament.resources.data-personal-resource.create');
 });
 
 
