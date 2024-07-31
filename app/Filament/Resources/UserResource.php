@@ -87,8 +87,8 @@ class UserResource extends Resource
                     Tables\Actions\DeleteAction::make(),
                     Action::make('Editar Dados Pessoais')
                         ->icon('heroicon-o-pencil-square')
-                        ->action(function (User $record, array $data) {
-                            return redirect('admin/data-personals/create',['user' => $record->id] );
+                        ->action(function (User $record) {
+                            return redirect('admin/data-personals/create?id='.$record->id );
                         }),
                 ])->button()
                     ->label('Ação')

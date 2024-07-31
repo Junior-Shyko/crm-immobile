@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DataPersonalResource\Pages;
 use App\Filament\Resources\DataPersonalResource\RelationManagers;
+use App\Helpers\Helpers;
 use App\Models\DataPersonal;
 use App\Models\User;
 use Filament\Forms;
@@ -27,11 +28,10 @@ class DataPersonalResource extends Resource
     protected static ?string $model = DataPersonal::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static bool $shouldRegisterNavigation = false;
     public static function form(Form $form): Form
     {
-        $user = User::find(request()->get('id'));
-//        dd($user->id);
+        $userForm = Helpers::getUserToForm($form);
         return $form
             ->schema([
                 Section::make('')
@@ -41,10 +41,9 @@ class DataPersonalResource extends Resource
                     ])
                     ->schema([
                         Placeholder::make('Proponente')
-                            ->content($user->id),
-                        Forms\Components\Hidden::make('user_id')
-                            ->default(fn() => $user->id)
-                            ->required(),
+                            ->content($userForm['nameUser']),
+                        Hidden::make('user_id')
+                            ->default($userForm['idUser']),
                         Document::make('cpf')
                             ->label('CPF')
                             ->cpf()
@@ -67,30 +66,15 @@ class DataPersonalResource extends Resource
                         Forms\Components\TextInput::make('nationality')
                             ->label('Nacionalidade')
                             ->maxLength(50),
-                        Select::make('EducationLevel')
-                            ->options([
-                                'Ensino fundamental imcompleto' => 'Ensino fundamental imcompleto',
-                                'Ensino fundamental completo' => 'Ensino fundamental completo',
-                                'Ensino médio incompleto' => 'Ensino médio incompleto',
-                                'Ensino médio completo' => 'Ensino médio completo',
-                                'Superior completo (ou graduação)' => 'Superior completo (ou graduação)',
-                                'Pós-graduação' => 'Pós-graduação',
-                                'Mestrado' => 'Mestrado',
-                                'Doutorado' => 'Doutorado'
-                            ])
+                        Select::make('educationLevel')
+                            ->options(Helpers::getEmploymentRelationship())
                             ->label('Grau de Instrução')
                             ->preload(),
                         Forms\Components\TextInput::make('naturality')
                             ->label('Natural')
                             ->maxLength(100),
                         Select::make('maritalStatus')
-                            ->options(['Casado' => 'Casado',
-                                    'Desquitado' => 'Desquitado',
-                                    'Divorciado' => 'Divorciado',
-                                    'União Estável' => 'União Estável',
-                                    'Solteiro' => 'Solteiro',
-                                    'Separado' => 'Separado',
-                                    'Viúvo' => 'Viúvo'])
+                            ->options(Helpers::getMaritalStatus())
                             ->label('Estado Civil')
                             ->preload(),
                     ])
@@ -102,14 +86,16 @@ class DataPersonalResource extends Resource
         $idFromURL = request()->get('id');
          return $table
             ->columns([
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Usuário')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('birthDate')
                     ->date('d/m/Y')
                     ->label('Data de nasc.')
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('cpf')
                     ->label('CPF')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nationality')
                     ->label('Nacional')
                     ->searchable()

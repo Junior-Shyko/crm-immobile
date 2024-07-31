@@ -12,7 +12,7 @@ class SettingsPermissions extends Page
     protected static ?string $navigationGroup = 'Configurações';
     protected static ?string $navigationLabel = 'Permissoes de usuário';
 
-
+    protected static bool $shouldRegisterNavigation = false;
     protected static ?string $title = 'Permissão de usuários';
 
 }
