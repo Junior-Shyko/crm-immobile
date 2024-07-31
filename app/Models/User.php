@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
@@ -53,5 +54,10 @@ class User extends Authenticatable implements FilamentUser
     {
         $user = auth()->user();
         return $user->hasPermissionTo('panel_access');
+    }
+
+    public function dataPersonal(): HasMany
+    {
+        return $this->hasMany(DataPersonal::class);
     }
 }

@@ -11,8 +11,8 @@ class SettingsPermissions extends Page
     protected static string $view = 'filament.pages.settings-permissions';
     protected static ?string $navigationGroup = 'Configurações';
     protected static ?string $navigationLabel = 'Permissoes de usuário';
-    protected static ?int $navigationSort = 1;
 
+    protected static bool $shouldRegisterNavigation = false;
     protected static ?string $title = 'Permissão de usuários';
 
 }

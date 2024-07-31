@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\DataPersonal;
 use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Actions\Action;
@@ -21,7 +22,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationLabel = 'Usuários';
     public static function form(Form $form): Form
     {
         $user = auth()->user();
@@ -72,7 +73,6 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('roles.name')
                     ->label('Papeis'),
-
                 TextColumn::make('created_at')
                     ->dateTime('d/m/Y')
                     ->label('Criado em'),
@@ -82,8 +82,14 @@ class UserResource extends Resource
             ])
             ->actions([
                 ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make()
+                    ->label('Editar acesso'),
                     Tables\Actions\DeleteAction::make(),
+                    Action::make('Editar Dados Pessoais')
+                        ->icon('heroicon-o-pencil-square')
+                        ->action(function (User $record) {
+                            return redirect('admin/data-personals/create?id='.$record->id );
+                        }),
                 ])->button()
                     ->label('Ação')
                     ->color('primary')

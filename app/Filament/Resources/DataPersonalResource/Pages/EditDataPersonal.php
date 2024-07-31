@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\DataPersonalResource\Pages;
 
 use App\Filament\Resources\DataPersonalResource;
+use App\Helpers\Helpers;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Notifications\Notification;
 
 class EditDataPersonal extends EditRecord
 {
@@ -15,5 +17,17 @@ class EditDataPersonal extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function getSavedNotification(): ?Notification
+    {
+        return Helpers::customNotification(
+            'success',
+            'Sucesso',
+            'Dados pessoais registrados com sucesso!',
+            'heroicon-s-check-circle',
+            'success'
+        );
+
     }
 }
