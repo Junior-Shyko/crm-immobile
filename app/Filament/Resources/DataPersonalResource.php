@@ -37,7 +37,7 @@ class DataPersonalResource extends Resource
         return $form
             ->schema([
                 Section::make('')
-                    ->description('Cadastro relacionado aos dados pessoais do usuário')
+                    ->description('Cadastro relacionando aos dados pessoais do usuário')
                     ->columns([
                         'md' => 3
                     ])
