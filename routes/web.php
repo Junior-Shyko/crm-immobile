@@ -13,9 +13,7 @@ Route::domain('{tenant}.localhost')->group(function () {
     Route::get('/', function (string $tenant) {
         return $tenant;
     });
-    Route::get('/data-personal-resource/create', [DataPersonalResource::class, 'create'])
-        ->name('filament.resources.data-personal-resource.create');
-});
+})->middleware(['auth']);
 
 
 Route::view('dashboard', 'dashboard')

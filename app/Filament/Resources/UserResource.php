@@ -3,10 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\Pages\ManageUsers;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\DataPersonal;
 use App\Models\User;
+use App\Repositories\DataPersonalRepository;
+use App\Repositories\UserRepository;
 use Filament\Forms\Components\Select;
+use Filament\Navigation\NavigationItem;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Form;
@@ -16,6 +20,12 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Section;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
+use function dd;
+use function redirect;
+use Filament\Resources\Pages\Page;
 
 class UserResource extends Resource
 {
@@ -87,8 +97,10 @@ class UserResource extends Resource
                     Tables\Actions\DeleteAction::make(),
                     Action::make('Editar Dados Pessoais')
                         ->icon('heroicon-o-pencil-square')
-                        ->action(function (User $record) {
-                            return redirect('admin/data-personals/create?id='.$record->id );
+                        ->action(function (User $user) {
+                            //Verifica se tem dados pessoais para fazer o redirecionamento correto
+                            $dtPersonal = new DataPersonalRepository($user);
+                            return $dtPersonal->redirectCreateOrEditDataPersoanl();
                         }),
                 ])->button()
                     ->label('Ação')
@@ -108,5 +120,19 @@ class UserResource extends Resource
             'index' => Pages\ManageUsers::route('/'),
         ];
     }
+
+    public static function getNavigationLabel(): string
+    {
+        $label = UserRepository::adaptsNavigationUser();
+        return $label['label'];
+    }
+
+
+    public static function getNavigationUrl():string
+    {
+        $url = UserRepository::adaptsNavigationUser();
+        return $url['url'];
+    }
+
 
 }

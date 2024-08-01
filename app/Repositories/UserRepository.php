@@ -4,7 +4,9 @@ namespace App\Repositories;
 
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
-class UserRepository implements UserRepositoryInterface
+use Illuminate\Support\Facades\Auth;
+
+class UserRepository
 {
     public function getAllUsers()
     {
@@ -35,5 +37,23 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::where('is_fulfilled', true);
     }
+
+    static public function adaptsNavigationUser() : array
+    {
+        $user = Auth::user();
+        // Verifique o nível de permissão do usuário logado
+        if ($user->hasRole(['super-admin', 'saas-super-admin'])) {
+            $label = "Usuários";
+            $url = '/admin/users';
+        } else {
+            $label = "Editar Dados Pessoais";
+            $dtPersonal = new DataPersonalRepository($user);
+            $url =  $dtPersonal->redirectCreateOrEditDataPersoanl()->getTargetUrl();
+        }
+
+        return ['label' => $label, 'url' => $url];
+    }
+
+
 
 }

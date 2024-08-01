@@ -19,6 +19,11 @@ use Leandrocfe\FilamentPtbrFormFields\Document;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DataPersonalResource\Pages;
 use App\Filament\Resources\DataPersonalResource\RelationManagers;
+use function auth;
+use function dd;
+use function dump;
+use function redirect;
+use function request;
 
 class DataPersonalResource extends Resource
 {
@@ -144,5 +149,26 @@ class DataPersonalResource extends Resource
             'create' => Pages\CreateDataPersonal::route('/create'),
             'edit' => Pages\EditDataPersonal::route('/{record}/edit'),
         ];
+    }
+
+    public static function canAccess(): bool
+    {
+        $user = auth()->user();
+        if(!is_null(request()->route()->record)){
+            $idDataPersonal = request()->route()->record;
+            $personal = DataPersonal::find($idDataPersonal);
+        }else{
+            $personal = new DataPersonal();
+            $personal->user_id = $user->id;
+        }
+        if(isset($personal->user_id) && $personal->user_id == $user->id)
+        {
+            return true;
+        }elseif ($user->hasRole(['saas-super-admin', 'super-admin']))
+        {
+            return true;
+        }else{
+            return false;
+        }
     }
 }

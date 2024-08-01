@@ -7,10 +7,12 @@ use App\Helpers\Helpers;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Notifications\Notification;
+use function auth;
 
 class EditDataPersonal extends EditRecord
 {
     protected static string $resource = DataPersonalResource::class;
+
 
     protected function getHeaderActions(): array
     {
@@ -30,4 +32,7 @@ class EditDataPersonal extends EditRecord
         );
 
     }
+
+
+
 }
