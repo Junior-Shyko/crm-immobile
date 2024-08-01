@@ -20,7 +20,7 @@ class DataPersonalRepository
     ) {}
 
     //Verifica se o usuario tem endereço.
-    public function redirectCreateOrEditDataPersoanl() : RedirectResponse|Redirector
+    public function redirectCreateOrEditDataPersonal() : RedirectResponse|Redirector
     {
         if($this->user->dataPersonal)
         {

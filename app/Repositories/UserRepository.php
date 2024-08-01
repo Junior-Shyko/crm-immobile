@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use function request;
 
 class UserRepository
 {
@@ -48,9 +49,9 @@ class UserRepository
         } else {
             $label = "Editar Dados Pessoais";
             $dtPersonal = new DataPersonalRepository($user);
-            $url =  $dtPersonal->redirectCreateOrEditDataPersoanl()->getTargetUrl();
+            $url = $dtPersonal->redirectCreateOrEditDataPersonal();
+//            dd($url);
         }
-
         return ['label' => $label, 'url' => $url];
     }
 
