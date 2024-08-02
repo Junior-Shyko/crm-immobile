@@ -39,6 +39,7 @@ class UserRepository
         return User::where('is_fulfilled', true);
     }
 
+    //Muda o link do sidebar dependendo do papel do usuario
     static public function adaptsNavigationUser() : array
     {
         $user = Auth::user();
@@ -50,7 +51,6 @@ class UserRepository
             $label = "Editar Dados Pessoais";
             $dtPersonal = new DataPersonalRepository($user);
             $url = $dtPersonal->redirectCreateOrEditDataPersonal();
-//            dd($url);
         }
         return ['label' => $label, 'url' => $url];
     }

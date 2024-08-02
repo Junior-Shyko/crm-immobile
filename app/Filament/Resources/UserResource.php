@@ -20,6 +20,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Section;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -132,12 +133,15 @@ class UserResource extends Resource
 
     public static function getNavigationUrl():string
     {
+        //Muda o link do sidebar dependendo do papel do usuario
        $url = UserRepository::adaptsNavigationUser();
 
        if($url['url'] instanceof Redirector) {
            return $url['url']->getUrlGenerator()->getRequest()->server('PATH_INFO');
-       }else{
+       }elseif($url['url'] instanceof RedirectResponse){
            return $url['url']->getTargetUrl();
+       }else{
+           return $url['url'];
        }
     }
 
