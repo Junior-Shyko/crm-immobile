@@ -50,6 +50,9 @@ class UserResource extends Resource
                     TextInput::make('email')
                         ->label('E-mail do Usuário')
                         ->required(),
+                    TextInput::make('password')
+                        ->label('Senha')
+                        ->required(),
                 ];
                 if ($user->hasRole(['saas-super-admin', 'super-admin'])) {
                     $schema[] = Section::make('Permissão')
