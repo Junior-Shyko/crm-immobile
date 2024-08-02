@@ -35,6 +35,8 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Usuários';
+    protected static ?string $navigationGroup = 'Usuário';
+    protected static ?int $navigationSort = 0;
     public static function form(Form $form): Form
     {
         $user = auth()->user();
@@ -47,6 +49,9 @@ class UserResource extends Resource
                         ->required(),
                     TextInput::make('email')
                         ->label('E-mail do Usuário')
+                        ->required(),
+                    TextInput::make('password')
+                        ->label('Senha')
                         ->required(),
                 ];
                 if ($user->hasRole(['saas-super-admin', 'super-admin'])) {
