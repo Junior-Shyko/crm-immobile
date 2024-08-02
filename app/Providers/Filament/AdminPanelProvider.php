@@ -7,10 +7,9 @@ use App\Repositories\DataPersonalRepository;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\MenuItem;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Filament\Pages;
 use Filament\Panel;
-use Filament\Pages\Dashboard;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
@@ -21,7 +20,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Filament\Navigation\NavigationItem;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -65,6 +64,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                FilamentEditProfilePlugin::make()
+                    ->setNavigationGroup('Usuário')
+                    ->setSort(1)
+                    ->setIcon('heroicon-o-user')
+                    ->shouldShowAvatarForm()
             ]);
     }
 }
