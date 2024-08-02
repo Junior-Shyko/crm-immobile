@@ -3,10 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\Pages\ManageUsers;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\DataPersonal;
 use App\Models\User;
+use App\Repositories\DataPersonalRepository;
+use App\Repositories\UserRepository;
 use Filament\Forms\Components\Select;
+use Filament\Navigation\NavigationItem;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Form;
@@ -16,6 +20,14 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Section;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Features\SupportRedirects\Redirector;
+use function dd;
+use function redirect;
+use Filament\Resources\Pages\Page;
 
 class UserResource extends Resource
 {
@@ -83,13 +95,16 @@ class UserResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\EditAction::make()
-                    ->label('Editar acesso'),
-                    Tables\Actions\DeleteAction::make(),
+                    ->label('Editar acesso')
+                    ->icon('heroicon-c-user-circle'),
                     Action::make('Editar Dados Pessoais')
                         ->icon('heroicon-o-pencil-square')
-                        ->action(function (User $record) {
-                            return redirect('admin/data-personals/create?id='.$record->id );
+                        ->action(function (User $user) {
+                            //Verifica se tem dados pessoais para fazer o redirecionamento correto
+                            $dtPersonal = new DataPersonalRepository($user);
+                            return $dtPersonal->redirectCreateOrEditDataPersonal();
                         }),
+                    Tables\Actions\DeleteAction::make(),
                 ])->button()
                     ->label('Ação')
                     ->color('primary')
@@ -107,6 +122,27 @@ class UserResource extends Resource
         return [
             'index' => Pages\ManageUsers::route('/'),
         ];
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        $label = UserRepository::adaptsNavigationUser();
+        return $label['label'];
+    }
+
+
+    public static function getNavigationUrl():string
+    {
+        //Muda o link do sidebar dependendo do papel do usuario
+       $url = UserRepository::adaptsNavigationUser();
+
+       if($url['url'] instanceof Redirector) {
+           return $url['url']->getUrlGenerator()->getRequest()->server('PATH_INFO');
+       }elseif($url['url'] instanceof RedirectResponse){
+           return $url['url']->getTargetUrl();
+       }else{
+           return $url['url'];
+       }
     }
 
 }

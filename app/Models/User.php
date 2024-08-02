@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
@@ -12,6 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable, HasRoles, UsesTenantConnection, HasApiTokens;
@@ -56,8 +58,8 @@ class User extends Authenticatable implements FilamentUser
         return $user->hasPermissionTo('panel_access');
     }
 
-    public function dataPersonal(): HasMany
+    public function dataPersonal(): HasOne
     {
-        return $this->hasMany(DataPersonal::class);
+        return $this->hasOne(DataPersonal::class, 'user_id');
     }
 }
