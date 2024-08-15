@@ -6,6 +6,7 @@ use Filament\Forms;
 use Filament\Tables;
 use App\Helpers\Helpers;
 use Filament\Forms\Form;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use App\Models\DataPersonal;
 use Filament\Resources\Resource;
@@ -79,6 +80,15 @@ class DataPersonalResource extends Resource
                             ->options(Helpers::getMaritalStatus())
                             ->label('Estado Civil')
                             ->preload(),
+                        Select::make('baptized')
+                            ->options([
+                                'Sim' => 'Sim',
+                                'Não' => 'Não'
+                            ])
+                            ->label('Batizado')
+                            ->preload(),
+                        Forms\Components\DatePicker::make('conversionDate')
+                            ->label('Data de Batismo'),
                     ])
             ]);
     }
@@ -98,10 +108,17 @@ class DataPersonalResource extends Resource
                 Tables\Columns\TextColumn::make('cpf')
                     ->label('CPF')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nationality')
-                    ->label('Nacional')
+                Tables\Columns\TextColumn::make('sex')
+                    ->label('Sexo')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('maritalStatus')
+                    ->label('Estado Civil')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('baptized')
+                    ->label('Batizado')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado')
                     ->dateTime()
@@ -117,7 +134,18 @@ class DataPersonalResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('sex')
+                    ->options([
+                        'Masculino' => 'Masculino',
+                        'Feminino' => 'Feminino'
+                    ])->label('Sexo'),
+                SelectFilter::make('maritalStatus')
+                    ->options(Helpers::getMaritalStatus())->label('Estado Civil'),
+                SelectFilter::make('baptized')
+                    ->options([
+                        'Sim' => 'Sim',
+                        'Não' => 'Não'
+                    ])->label('Batizado'),
             ])
             ->actions([
                 ActionGroup::make([

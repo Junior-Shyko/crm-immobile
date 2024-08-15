@@ -15,7 +15,12 @@ class RolesAndPermissionSeeder extends Seeder
     public function run(): void
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-
+        Permission::create(['name' => 'panel_access']);
+        //create permission to user
+        Permission::create(['name' => 'create user']);
+        Permission::create(['name' => 'read user']);
+        Permission::create(['name' => 'update user']);
+        Permission::create(['name' => 'delete user']);
         //create permission to profile
         Permission::create(['name' => 'create profile']);
         Permission::create(['name' => 'reload profile']);
@@ -43,13 +48,33 @@ class RolesAndPermissionSeeder extends Seeder
         // this can be done as separate statements
         $role = Role::create(['name' => 'common']);
         $role->givePermissionTo('update profile');
+        $role->givePermissionTo('panel_access');
+        $role->givePermissionTo('read user');
+        $role->givePermissionTo('update user');
 
         // or may be done by chaining
-        $role = Role::create(['name' => 'manager'])
-            ->givePermissionTo(['create profile', 'reload profile', 'update profile']);
+        Role::create(['name' => 'manager'])
+            ->givePermissionTo([
+                'create profile',
+                'reload profile',
+                'update profile',
+                'panel_access',
+                'read user',
+                'update user',
+                'create user'
+            ]);
 
         $role = Role::create(['name' => 'super-admin']);
-        $role->givePermissionTo(['create profile', 'reload profile', 'update profile', 'delete profile']);
+        $role->givePermissionTo([
+            'create profile',
+            'reload profile',
+            'update profile',
+            'delete profile',
+            'panel_access',
+            'read user',
+            'update user',
+            'delete user',
+            'create user']);
         //Sass-super-admin
         $role = Role::create(['name' => 'saas-super-admin']);
         $role->givePermissionTo(Permission::all());

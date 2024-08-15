@@ -3,14 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\Pages\ManageUsers;
 use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\DataPersonal;
 use App\Models\User;
 use App\Repositories\DataPersonalRepository;
 use App\Repositories\UserRepository;
 use Filament\Forms\Components\Select;
-use Filament\Navigation\NavigationItem;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Form;
@@ -21,13 +18,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Section;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Features\SupportRedirects\Redirector;
-use function dd;
-use function redirect;
-use Filament\Resources\Pages\Page;
+
 
 class UserResource extends Resource
 {
@@ -88,6 +80,8 @@ class UserResource extends Resource
                 TextColumn::make('email')
                     ->label('E-mail')
                     ->searchable(),
+                TextColumn::make('dataPersonal.sex')
+                    ->label('Sexo'),
                 TextColumn::make('roles.name')
                     ->label('Papeis'),
                 TextColumn::make('created_at')
